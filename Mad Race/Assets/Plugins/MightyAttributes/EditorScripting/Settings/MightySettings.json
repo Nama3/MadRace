@@ -1,0 +1,14 @@
+{
+    "activated": true,
+    "mainAssemblyName": "Assembly-CSharp",
+    "pluginsAssemblyName": "Assembly-CSharp-firstpass",
+    "autoValuesOnReloadScripts": false,
+    "autoValuesOnPlay": false,
+    "autoValuesOnBuild": false,
+    "displayAutoValuesLogs": true,
+    "activateReloadScripts": false,
+    "displayReloadScriptsLogs": true,
+    "firstTime": false,
+    "docVersion": 1,
+    "docPath": "E:\\Library\\Documents\\Unity\\Tools\\mighty-attributes\\[Mighty]Attributes"
+}
