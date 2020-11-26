@@ -1,5 +1,4 @@
-﻿using System;
-using MightyAttributes;
+﻿using MightyAttributes;
 using PathCreation;
 #if UNITY_EDITOR
 using UnityEditorInternal;
@@ -15,10 +14,21 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private float _pathYOffset = .5f;
 
     [SerializeField, ReadOnly] private PathCreator[] _paths;
+    
+    private void Start() => Init();
 
-    public PathCreator GetPath(int index) => index < _paths.Length ? _paths[index] : null;
+    private void Init()
+    {
+        for (var i = 0; i < _paths.Length; i++) 
+            RunnersManager.Instance.SetRunnerPath(i, _paths[i]);
+        
+        RunnersManager.Instance.InitRunners();
+    }
 
 #if UNITY_EDITOR
+
+    #region Editor
+
     [Button]
     private void GeneratePaths()
     {
@@ -33,7 +43,6 @@ public class LevelManager : MonoBehaviour
         var trackTransform = _track.transform;
         var trackPath = _track.path;
         var trackBezierPath = _track.bezierPath;
-        var trackPointCount = trackPath.NumPoints;
 
         for (var i = 0; i < _pathsCount; i++)
         {
@@ -48,18 +57,20 @@ public class LevelManager : MonoBehaviour
 
             for (var j = 0; j < trackBezierPath.NumPoints; j++)
             {
-                var time = (float) j / (trackPointCount - 1);
-
-                var normal = trackPath.GetNormal(time);
-                var direction = trackPath.GetDirection(time);
-
-                var positionOffset = xOffset * (normal - direction) + _pathYOffset * trackPath.up;
-
                 var point = trackBezierPath.GetPoint(j);
+                var time = (float) j / (trackBezierPath.NumPoints - 1);
 
-                _paths[i].bezierPath.SetPoint(j, point + positionOffset);
+                var normal = trackPath.GetNormal(time, EndOfPathInstruction.Stop);
+                var direction = trackPath.GetDirection(time, EndOfPathInstruction.Stop);
+
+                var positionOffset = xOffset * -Vector3.Cross(normal, direction) + _pathYOffset * normal;
+
+                _paths[i].bezierPath.SetPoint(j, point + positionOffset, true);
             }
         }
     }
+
+    #endregion /Editor
+
 #endif
 }

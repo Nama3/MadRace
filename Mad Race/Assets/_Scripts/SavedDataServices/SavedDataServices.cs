@@ -4,7 +4,6 @@ using EncryptionTool;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
-
 #endif
 
 public enum SavedDataType : byte
@@ -22,7 +21,6 @@ public struct PlayerData
     
     public uint coinsAmount;
 
-    public byte biomeIndex;
     public byte levelIndex;
 }
 
@@ -90,20 +88,6 @@ public class SavedDataServices : MonoBehaviour
             if (PlayerData.coinsAmount == value) return;
 
             m_playerData.coinsAmount = value;
-
-            m_savePlayer = true;
-            SaveToLocal(SavedDataType.PlayerData);
-        }
-    }
-
-    public static byte BiomeIndex
-    {
-        get => PlayerData.biomeIndex;
-        set
-        {
-            if (PlayerData.biomeIndex == value) return;
-
-            m_playerData.biomeIndex = value;
 
             m_savePlayer = true;
             SaveToLocal(SavedDataType.PlayerData);
