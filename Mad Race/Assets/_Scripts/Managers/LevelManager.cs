@@ -7,22 +7,35 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+    public static LevelManager Instance { get; private set; }
+
     [SerializeField] private PathCreator _track;
     [SerializeField] private Transform _pathsTransform;
     [SerializeField] private int _pathsCount;
     [SerializeField] private float _pathWidth = .2f;
-    [SerializeField] private float _pathYOffset = .5f;
+    [SerializeField] private float _pathStartOffset, _pathEndOffset;
 
     [SerializeField, ReadOnly] private PathCreator[] _paths;
-    
+
     private void Start() => Init();
 
-    private void Init()
+    public void Init()
     {
-        for (var i = 0; i < _paths.Length; i++) 
+        Instance = this;
+
+        for (var i = 0; i < _paths.Length; i++)
             RunnersManager.Instance.SetRunnerPath(i, _paths[i]);
-        
+
         RunnersManager.Instance.InitRunners();
+    }
+
+    public void FinishLevel(BaseRunnerBehaviour runner)
+    {
+        RunnersManager.Instance.StopRunners();
+        if (runner is PlayerBehaviour)
+            GameManager.Instance.LoadNextLevel();
+        else
+            GameManager.Instance.ReloadLevel();
     }
 
 #if UNITY_EDITOR
@@ -63,7 +76,10 @@ public class LevelManager : MonoBehaviour
                 var normal = trackPath.GetNormal(time, EndOfPathInstruction.Stop);
                 var direction = trackPath.GetDirection(time, EndOfPathInstruction.Stop);
 
-                var positionOffset = xOffset * -Vector3.Cross(normal, direction) + _pathYOffset * normal;
+                var positionOffset = xOffset * -Vector3.Cross(normal, direction);
+
+                if (j < 2) positionOffset += direction * _pathStartOffset;
+                else if (j > trackBezierPath.NumPoints - 3) positionOffset += -direction * _pathEndOffset;
 
                 _paths[i].bezierPath.SetPoint(j, point + positionOffset, true);
             }

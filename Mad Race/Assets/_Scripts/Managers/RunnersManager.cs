@@ -15,6 +15,17 @@ public class RunnersManager : MonoBehaviour
     {
         foreach (var runner in _runners) runner.Init();
     }
+    
+    public void PlayRunners()
+    {
+        foreach (var runner in _runners) runner.Play();
+    }
+
+    public void StopRunners()
+    {
+        foreach (var runner in _runners) 
+            runner.Stop();
+    }
 
     public void UpdateManager()
     {

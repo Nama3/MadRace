@@ -88,9 +88,9 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BorderColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.09433961, g: 0.09433961, b: 0.09433961, a: 1}
+    - _Color: {r: 0.31444648, g: 0.5754717, b: 0.2795924, a: 1}
     - _DistTiling: {r: 0.06, g: 0.06, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _MoveDirection: {r: -0.7, g: 0, b: 0.3, a: 0}
     - _Tiling: {r: 0.15, g: 0.15, b: 0, a: 0}
-    - _WaterColor: {r: 0.13389996, g: 0.469156, b: 0.5566038, a: 1}
+    - _WaterColor: {r: 0.21440013, g: 0.53948116, b: 0.6226415, a: 1}

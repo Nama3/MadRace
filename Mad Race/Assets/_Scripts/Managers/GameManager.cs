@@ -4,8 +4,11 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance { get; private set; }
+    
     [SerializeField, FindAssets, Reorderable(false, options:ArrayOption.DisableSizeField)] private LevelModel[] _levels;
 
+    [SerializeField, FindObject, ReadOnly] private GUIManager _guiManager;
     [SerializeField, FindObject, ReadOnly] private RunnersManager _runnersManager;
 
     private void Start()
@@ -15,6 +18,9 @@ public class GameManager : MonoBehaviour
 
     private void Init()
     {
+        Instance = this;
+        
+        _guiManager.Init();
         _runnersManager.Init();
         LoadLevel(SavedDataServices.LevelIndex);
     }
@@ -51,5 +57,5 @@ public class GameManager : MonoBehaviour
 
     public bool IsLevelLoaded(byte index) => _levels[index].IsLoaded();
 
-    public void RestartLevel() => LoadLevel(SavedDataServices.LevelIndex, false);
+    public void ReloadLevel() => LoadLevel(SavedDataServices.LevelIndex, false);
 }
